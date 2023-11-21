@@ -11,8 +11,13 @@ if(isset($_POST['submit']))
 {
 $class=$_POST['class'];
 $subject=$_POST['subject']; 
+$id=$_POST['id'];
+$tittle=$_POST['title']; 
+$thumbnail=$_POST['thumbnail']; 
+$description=$_POST['description']; 
+$video=$_POST['video']; 
 $status=1;
-$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,status) VALUES(:class,:subject,:status)";
+$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,id,title,thumbnail,description,video,status) VALUES(:class,:subject,:status,:id,:title,:thumbnail,:description,:video)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':class',$class,PDO::PARAM_STR);
 $query->bindParam(':subject',$subject,PDO::PARAM_STR);
