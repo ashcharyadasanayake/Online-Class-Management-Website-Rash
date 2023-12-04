@@ -102,10 +102,6 @@ CREATE TABLE `tblsubjectcombination` (
   `id` int(11) NOT NULL,
   `ClassId` int(11) NOT NULL,
   `SubjectId` int(11) NOT NULL,
-  `title` varchar(20) NOT NULL,
-  `thumbnail` blob(100) NOT NULL,
-  `video` blob(100) NOT NULL,
-  `description` blob(100) NOT NULL,
   `status` int(1) DEFAULT NULL,
   `CreationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `Updationdate` timestamp NOT NULL DEFAULT current_timestamp()
@@ -130,13 +126,18 @@ CREATE TABLE `tblsubjects` (
 --
 
 CREATE TABLE `video` (
-  `id` int(11) NOT NULL,
+   `id` int(11) NOT NULL,
+  `ClassId` int(11) NOT NULL,
+  `SubjectId` int(11) NOT NULL,
   `title` varchar(20) NOT NULL,
   `thumbnail` blob(100) NOT NULL,
   `video` blob(100) NOT NULL,
   `description` blob(100) NOT NULL,
-  `UpdationDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp()
+  `status` int(1) DEFAULT NULL,
+  `CreationDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `Updationdate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ 
 --
 -- Indexes for dumped tables
 --

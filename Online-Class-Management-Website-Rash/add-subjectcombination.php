@@ -11,20 +11,12 @@ if(isset($_POST['submit']))
 {
 $class=$_POST['class'];
 $subject=$_POST['subject']; 
-$tittle=$_POST['title']; 
-$thumbnail=$_POST['thumbnail']; 
-$description=$_POST['description']; 
-$video=$_POST['video']; 
 $status=1;
-$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,title,thumbnail,description,video,status) VALUES(:class,:subject,:status,:title,:thumbnail,:description,:video)";
+$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,status) VALUES(:class,:subject,:status,)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':class',$class,PDO::PARAM_STR);
 $query->bindParam(':subject',$subject,PDO::PARAM_STR);
 $query->bindParam(':status',$status,PDO::PARAM_STR);
-$query->bindParam(':title',$tittle,PDO::PARAM_STR);
-$query->bindParam(':thumbnail',$thumbnail,PDO::PARAM_STR);
-$query->bindParam(':decription',$description,PDO::PARAM_STR);
-$query->bindParam('video',$video,PDO::FETCH_ASSOC);
 $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
@@ -149,68 +141,9 @@ foreach($results as $result)
                                                         </div>
                                                     </div>
                                                     
-                                                    <form class="form-horizontal" method="post">
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Title</label>
-                                                        <div class="col-sm-10">
- <input type="text" name="subjectname" class="form-control" id="default" placeholder="Video Title" required="required">
+                                                    
 
- <?php 
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->title); ?></option>
-<?php }} ?>
- 
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Description</label>
-                                                        <div class="col-sm-10">
- <input type="text" name="subjectname" class="form-control" id="default" placeholder="Video Description" required="required">
-
- <?php 
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->description); ?></option>
-<?php }} ?>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Thumbnail</label>
-                                                        <div class="col-sm-10">
-                                                        <input type="file" name="thumb" accept="image/*" required class="box">
-                                                        </div>
-                                                        <?php 
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->thumbnail); ?></option>
-<?php }} ?>                                            
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="default" class="col-sm-2 control-label">Select Video</label>
-                                                        <div class="col-sm-10">
-                                                        <input type="file" name="video" accept="video/*" required class="box">
-                                                        </div>
-                                                        <?php 
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{   ?>
-<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->video); ?></option>
-<?php }} ?>
-                                                    </div>
+                                                    
 
       
                                                     <div class="form-group">

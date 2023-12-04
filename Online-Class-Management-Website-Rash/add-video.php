@@ -7,17 +7,20 @@ if(strlen($_SESSION['alogin'])=="")
     header("Location: index.php"); 
     }
     else{
-if(isset($_POST['add']))
+if(isset($_POST['submit']))
 {
-$id=$_POST['id'];
+$class=$_POST['class'];
+$subject=$_POST['subject']; 
 $tittle=$_POST['title']; 
 $thumbnail=$_POST['thumbnail']; 
 $description=$_POST['description']; 
 $video=$_POST['video']; 
-
-$sql="INSERT INTO  video(id,title,thumbnail,description,video) VALUES(:id,:title,:thumbnail,:description,:video)";
+$status=1;
+$sql="INSERT INTO  tblsubjectcombination(ClassId,SubjectId,title,thumbnail,description,video,status) VALUES(:class,:subject,:title,:thumbnail,:description,:video,:status)";
 $query = $dbh->prepare($sql);
-$query->bindParam(':id',$id,PDO::PARAM_STR);
+$query->bindParam(':class',$class,PDO::PARAM_STR);
+$query->bindParam(':subject',$subject,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
 $query->bindParam(':title',$tittle,PDO::PARAM_STR);
 $query->bindParam(':thumbnail',$thumbnail,PDO::PARAM_STR);
 $query->bindParam(':decription',$description,PDO::PARAM_STR);
@@ -26,7 +29,7 @@ $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-$msg="Video added successfully";
+$msg="Combination added successfully";
 }
 else 
 {
@@ -41,7 +44,7 @@ $error="Something went wrong. Please try again";
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>SMS Admin video Creation </title>
+        <title>SRMS Admin Subject Combination< </title>
         <link rel="stylesheet" href="css/bootstrap.min.css" media="screen" >
         <link rel="stylesheet" href="css/font-awesome.min.css" media="screen" >
         <link rel="stylesheet" href="css/animate-css/animate.min.css" media="screen" >
@@ -69,7 +72,7 @@ $error="Something went wrong. Please try again";
                      <div class="container-fluid">
                             <div class="row page-title-div">
                                 <div class="col-md-6">
-                                    <h2 class="title">Add Video</h2>
+                                    <h2 class="title">Add video</h2>
                                 
                                 </div>
                                 
@@ -80,8 +83,8 @@ $error="Something went wrong. Please try again";
                                 <div class="col-md-6">
                                     <ul class="breadcrumb">
                                         <li><a href="dashboard.php"><i class="fa fa-home"></i> Home</a></li>
-                                        <li> Video</li>
-                                        <li class="active">Add Video</li>
+                                        <li> Subjects</li>
+                                        <li class="active">Add Subject Combination</li>
                                     </ul>
                                 </div>
                              
@@ -95,7 +98,7 @@ $error="Something went wrong. Please try again";
                                         <div class="panel">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <h5>Add Video</h5>
+                                                    <h5>Add video</h5>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
@@ -108,7 +111,7 @@ else if($error){?>
                                             <strong>Oh snap!</strong> <?php echo htmlentities($error); ?>
                                         </div>
                                         <?php } ?>
-                                        <form class="form-horizontal" method="post">
+                                                <form class="form-horizontal" method="post">
                                                     <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Class</label>
                                                         <div class="col-sm-10">
@@ -151,12 +154,31 @@ foreach($results as $result)
                                                         <label for="default" class="col-sm-2 control-label">Title</label>
                                                         <div class="col-sm-10">
  <input type="text" name="subjectname" class="form-control" id="default" placeholder="Video Title" required="required">
+
+ <?php 
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{   ?>
+<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->title); ?></option>
+<?php }} ?>
+ 
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="default" class="col-sm-2 control-label">Description</label>
                                                         <div class="col-sm-10">
  <input type="text" name="subjectname" class="form-control" id="default" placeholder="Video Description" required="required">
+
+ <?php 
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{   ?>
+<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->description); ?></option>
+<?php }} ?>
                                                         </div>
                                                     </div>
 
@@ -165,6 +187,14 @@ foreach($results as $result)
                                                         <div class="col-sm-10">
                                                         <input type="file" name="thumb" accept="image/*" required class="box">
                                                         </div>
+                                                        <?php 
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{   ?>
+<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->thumbnail); ?></option>
+<?php }} ?>                                            
                                                     </div>
 
                                                     <div class="form-group">
@@ -172,6 +202,14 @@ foreach($results as $result)
                                                         <div class="col-sm-10">
                                                         <input type="file" name="video" accept="video/*" required class="box">
                                                         </div>
+                                                        <?php 
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{   ?>
+<option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->video); ?></option>
+<?php }} ?>
                                                     </div>
 
       
@@ -182,11 +220,6 @@ foreach($results as $result)
                                                     </div>
                                                 </form>
 
-                                                    
-
-                                                    
-                                                    
-                                                
                                             </div>
                                         </div>
                                     </div>
